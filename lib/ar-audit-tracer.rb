@@ -13,8 +13,14 @@ module ActiveRecord
       #  add_authors(:suppliers)
       def add_authorstamps(table_name, type=:string, *args)
         options = {:null => false}.merge(args.extract_options!)
-        add_column table_name, :created_by, type, options
-        add_column table_name, :updated_by, type, options
+        
+        if defined? new_column
+          new_column table_name, :created_by, type, options
+          new_column table_name, :updated_by, type, options
+        else
+          add_column table_name, :created_by, type, options
+          add_column table_name, :updated_by, type, options
+        end
       end
 
       # Removes the author columns (created_by and updated_by) from the table definition.
